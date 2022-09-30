@@ -65,6 +65,12 @@ elif [[ -d "cunumeric" ]]; then
               --editable \
               $MARCH_ARG \
               "$@"
+elif [[ -d "sparse" ]]; then
+    run_build ./install.py \
+              --verbose \
+              --editable \
+              $MARCH_ARG \
+              "$@"
 else
     echo "Error: Unsupported library" 1>&2
     exit 1
