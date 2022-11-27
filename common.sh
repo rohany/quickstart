@@ -22,7 +22,7 @@ function detect_platform {
         export PLATFORM=cori
     elif [[ "$(uname -n)" == *"daint"* ]]; then
         export PLATFORM=pizdaint
-    elif [[ "$(uname -n)" == *"sapling"* ]]; then
+    elif [[ "$(uname -n)" == *"sapling"* || "$(uname -n)" == "g000"* ]]; then
         export PLATFORM=sapling
     elif [[ "$(uname -n)" == *"lassen"* ]]; then
         export PLATFORM=lassen
@@ -121,7 +121,7 @@ function set_build_vars {
     export USE_CUDA="${USE_CUDA:-1}"
     export USE_OPENMP="${USE_OPENMP:-1}"
     export NETWORK="${NETWORK:-gasnet1}"
-    export MARCH_ARG="${MARCH_ARG:-'--march native'}"
+    export MARCH_ARG="${MARCH_ARG:-}"
 }
 
 function set_mofed_vars {
@@ -151,7 +151,7 @@ function run_build {
         set -- srun -C gpu -N 1 -t 60 -G 1 -c 10 -A "$ACCOUNT" "$@"
     elif [[ "$PLATFORM" == pizdaint ]]; then
         set -- srun -N 1 -p debug -C gpu -t 30 -A "$ACCOUNT" "$@"
-    elif [[ "$PLATFORM" == sapling ]]; then
+    elif [[ "$PLATFORM" == saplingAAA ]]; then
         set -- srun --exclusive -N 1 -p gpu -t 60 "$SCRIPT_DIR/sapling_run.sh" "$@"
     elif [[ "$PLATFORM" == lassen ]]; then
         set -- lalloc 1 -q pdebug -W 60 -G "$GROUP" "$@"
